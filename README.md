@@ -3,6 +3,9 @@ jQuery Mask Loader
 
 Simple Jquery plugin preloader for ajax, etc. Easy to use.
 
+Demo page: http://rafaelortegabueno.com/jquery_maskloader/
+
+
 Installation
 ------------
 1. Installation via Bower:
