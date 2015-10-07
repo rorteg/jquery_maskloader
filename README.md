@@ -1,7 +1,7 @@
 jQuery Mask Loader
 ==================
 
-Simple Jquery plugin preloader for ajax. Easy to use.
+Simple Jquery plugin preloader for ajax, etc. Easy to use.
 
 Installation
 ------------
