@@ -2,28 +2,37 @@ define('App', ['jquery', 'maskloader'], function($){
 
 
 
-	$('#bt-body').click(function(){
-		var maskloader = $('body').maskLoader();
+	$('#bt-body').click(function(e){
+		e.stopPropagation();
+		var maskloader = $('body').maskLoader({
+			imgLoader: './dist/giphy.gif'
+		});
 		
 		setTimeout(function(){
 			maskloader.destroy();
 		},3000);
 	});
 
-	$('#bt-panel').click(function(){
-		var maskloader = $('.panel-info').maskLoader({textAlert:'Rafael'});
+	$('#bt-panel').click(function(e){
+		e.stopPropagation();
+		var maskloader = $('.panel-info').maskLoader({
+			imgLoader:'./dist/ele-running.gif'
+		});
 		
 		setTimeout(function(){
 			maskloader.destroy();
 		},3000);
 	});
 
-	$('#bt-formgroup').click(function(){
-		var maskloader = $('.form-group').first().maskLoader();
+	$('#bt-formgroup').click(function(e){
+		e.stopPropagation();
+		var maskloader = $('.form-group').first().maskLoader({
+			imgLoader: './dist/preloaders.gif'
+		});
 		
 		setTimeout(function(){
 			maskloader.destroy();
-		},3000);
+		},10000);
 	});
 	
 
