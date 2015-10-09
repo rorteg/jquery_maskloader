@@ -54,3 +54,20 @@ var maskloader = $('.container').maskLoader({
   'autoCreate':true // If false, you will have to run the "create" function. Ex: $('body').maskLoader().create(); 
 });
 ```
+
+jQuery Ajax default Handle:
+------------
+```javascript
+$.ajax({
+  url:'http://cep.correiocontrol.com.br/82400470.json',
+		maskLoaderSettings: {
+			element:$('body').first(),
+			background:'black',
+			opacity:'0.2',
+			textAlert:'TEST'
+		},
+		success:function(data){
+			console.log(data);
+		}
+});
+```
