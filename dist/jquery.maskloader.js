@@ -12,7 +12,8 @@
             'opacity': '0.6',
             'position': 'absolute',
             'imgLoader': false,
-            'autoCreate':true
+            'autoCreate':true,
+            'textAlert':false
         }, options);
 
         var el = $(this);
@@ -37,9 +38,11 @@
 
         var maskLoaderEl = $('<div class="mask-loader ' + additionalClass + '"></div>');
         var imgLoaderEl = $('<div class="mask-loader img '+ additionalClass +'"></div>');
-        
-        
-        
+        var textAlert = $();
+        if(settings.textAlert){
+            var textAlert = $('<div class="mask-loader text-alert '+ additionalClass +'"><div class="textalert">'+settings.textAlert+'</div></div>');
+        }
+               
 
         maskLoaderEl.css(settings);
 
@@ -54,6 +57,11 @@
             imgLoaderEl.css({
                 'position':'fixed'
             });
+
+            textAlert.css({
+                'position':'fixed'
+            });
+            
         } else {
             maskLoaderEl.css({
                 'width': el.width() - 2,
@@ -62,9 +70,18 @@
             imgLoaderEl.css({
                 'position':'absolute'
             });
+            textAlert.css({
+                'position':'absolute'
+            });
         }
 
         imgLoaderEl.css({
+            'z-index':parseInt(maskLoaderEl.css('z-index') + 5),
+            'width':maskLoaderEl.css('width'),
+            'height':maskLoaderEl.css('height')
+        });
+
+        textAlert.css({
             'z-index':parseInt(maskLoaderEl.css('z-index') + 5),
             'width':maskLoaderEl.css('width'),
             'height':maskLoaderEl.css('height')
@@ -80,26 +97,29 @@
         var functions = {
             create: function () {
                 el.each(function () {
-                    el.prepend(imgLoaderEl);
-                    el.prepend(maskLoaderEl);
-                    if (fade) {
-                        el.find('.mask-loader').fadeIn('slow');
-                    }
+                    $(this).prepend(textAlert.clone());
+                    $(this).prepend(imgLoaderEl.clone());
+                    $(this).prepend(maskLoaderEl.clone());
 
+                    
+                    if (fade) {
+                        $(this).find('.mask-loader').fadeIn('slow');
+                    }
                 });
+
+
             },
             destroy: function () {
                 el.each(function () {
+                   
                     if (fade) {
-                        el.find('.mask-loader').eq(0).fadeOut('slow', function () {
+                        $(this).find('.mask-loader').fadeOut('slow', function () {
                             $(this).remove();
                         });
-                        el.find('.mask-loader').eq(1).fadeOut('slow', function () {
-                            $(this).remove();
-                        });
+                        
                     } else {
-                        el.find('.mask-loader').eq(0).remove();
-                        el.find('.mask-loader').eq(1).remove();
+                        $(this).find('.mask-loader').remove();
+                        
                     }
 
                 });
@@ -113,4 +133,54 @@
         return functions;
 
     };
+
+    var maskLoaderObjects = {};
+
+    /**
+    * jQuery Ajax Handles
+    */
+    $(document).ajaxSend(function(e, jqXHR, ajaxOptions){
+        if(ajaxOptions.maskLoaderSettings != null){
+
+            if(!ajaxOptions.maskLoaderSettings.hasOwnProperty('element')){
+                throw 'MaskLoader: element not defined. Ex: maskLoaderSettings:{"element":"#id .class"}';
+            }
+
+            var element = ajaxOptions.maskLoaderSettings.element;
+
+            delete ajaxOptions.maskLoaderSettings.element;
+
+            maskLoaderObjects.element = element;
+
+            if($.type(element) != 'object' && $.type(element) == 'string'){
+                maskLoaderObjects.element = $(element);
+            }
+
+            if(maskLoaderObjects.element.length){
+                maskLoaderObjects.maskLoader = maskLoaderObjects.element.maskLoader(ajaxOptions.maskLoaderSettings);
+            }else{
+               throw ('MaskLoader: Element not exists.');
+            }
+        }
+    });
+
+    $(document).ajaxError(function(e, jqXHR, ajaxOptions, error){
+        if(maskLoaderObjects.hasOwnProperty('element')){
+            maskLoaderObjects.maskLoader.destroy();   
+        }
+    });
+
+    $(document).ajaxComplete(function(e, jqXHR, ajaxOptions){
+        if(maskLoaderObjects.hasOwnProperty('element')){
+            maskLoaderObjects.maskLoader.destroy();   
+        }
+    });
+
+    $(document).ajaxStop(function(){
+        if(maskLoaderObjects.hasOwnProperty('element')){
+            maskLoaderObjects.maskLoader.destroy();   
+        }
+    });
+
+
 })(jQuery);

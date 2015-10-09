@@ -11,7 +11,7 @@ define('App', ['jquery', 'maskloader'], function($){
 	});
 
 	$('#bt-panel').click(function(){
-		var maskloader = $('.panel-info').first().maskLoader();
+		var maskloader = $('.panel-info').maskLoader({textAlert:'Rafael'});
 		
 		setTimeout(function(){
 			maskloader.destroy();
@@ -25,7 +25,24 @@ define('App', ['jquery', 'maskloader'], function($){
 			maskloader.destroy();
 		},3000);
 	});
+	
 
+	/**
+	* Exemplo de handle ajax.
+	*/
+
+	$.ajax({
+		url:'http://cep.correiocontrol.com.br/82400470.json',
+		maskLoaderSettings: {
+			element:$('body').first(),
+			background:'black',
+			opacity:'0.2',
+			textAlert:'TEST'
+		},
+		success:function(data){
+			console.log(data);
+		}
+	});	
 	
 
 });
