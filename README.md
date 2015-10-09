@@ -61,7 +61,7 @@ jQuery Ajax default Handle:
 $.ajax({
   url:'http://cep.correiocontrol.com.br/82400470.json',
 		maskLoaderSettings: {
-			element:$('body').first(),
+			element:$('body'),
 			background:'black',
 			opacity:'0.2',
 			textAlert:'TEST'
